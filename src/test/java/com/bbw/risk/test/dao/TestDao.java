@@ -1,10 +1,5 @@
 package com.bbw.risk.test.dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +11,8 @@ import org.nutz.dao.Sqls;
 import org.nutz.dao.entity.Record;
 import org.nutz.dao.pager.Pager;
 import org.nutz.dao.sql.Sql;
-import org.nutz.dao.sql.SqlCallback;
+import org.nutz.filepool.FilePool;
+import org.nutz.filepool.NutFilePool;
 
 import com.bbw.risk.DaoCase;
 import com.bbw.risk.bean.SsDic;
@@ -52,7 +48,7 @@ public class TestDao extends DaoCase {
 	@Test
 	public void testPager(){
 		Sql sqls = cdao.sqls().create("cuscom.data");
-		sqls.params().set("a", "周");
+		sqls.vars().set("a", "周");
 		Pager pager = cdao.createPager(1, 20);
 		sqls.setPager(pager);
 		sqls.setCallback(Sqls.callback.records());
@@ -63,6 +59,14 @@ public class TestDao extends DaoCase {
 			System.out.println(r.getString("cus_name"));
 		}
 		Assert.assertTrue(list.size()>0);
+	}
+	@Test
+	public void testFilePool(){
+		FilePool pool = new NutFilePool("D:/temp2", 2000);
+		pool.createDir();
+		pool.createFile("test");
+		pool.createFile("test2");
+		Assert.assertTrue(true);
 	}
 
 }
